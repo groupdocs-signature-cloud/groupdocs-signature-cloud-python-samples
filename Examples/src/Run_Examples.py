@@ -44,8 +44,8 @@ from Search_Signature.Working_with_Search_Collection.Signature_Python_Search_Col
 class Run_Examples:
 
     # Get your app_sid and app_key at https://dashboard.groupdocs.cloud (free registration is required).
-    app_sid = "d215ce72-1609-4282-8d55-5810942236fb"
-    app_key = "715d18b0afef2f303882c769921fe05a"
+    app_sid = "xxxxxxxxx"
+    app_key = "xxxxxxxxx"
     storageName = "MyStorage" #Put your storage name here
     host = "http://api.groupdocs.cloud"   # Put your Host URL here
     base_url = "http://api.groupdocs.cloud/v1" #Put your Base URL here
