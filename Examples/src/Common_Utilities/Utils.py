@@ -1,70 +1,81 @@
-# Import module
-from groupdocs_signature_cloud.rest import ApiException
+import os
+
 import groupdocs_signature_cloud
-import asposestoragecloud
-import json
+
 
 class Common_Utilities:
+
+    # Get your app_sid and app_key at https://dashboard.groupdocs.cloud (free registration is required).
+    app_sid = None
+    app_key = None
+    host_url = None
+    myStorage = None
     
-    app_sid = ""
-    app_key = ""
-    storage_name = ""
-    host = "http://api.groupdocs.cloud"   # Put your Host URL here
-    base_url = "http://api.groupdocs.cloud/v1" #Put your Base URL here
-
-    @staticmethod
-    def Set_Globals(app_sidin, app_keyin, storage_namein, hostin, base_urlin):
-        Common_Utilities.app_sid = app_sidin
-        Common_Utilities.app_key = app_keyin
-        Common_Utilities.host = hostin
-        Common_Utilities.base_url = base_urlin
-        Common_Utilities.storage_name = storage_namein
-   
-    @staticmethod
-    def Get_SignatureApi_Instance():
-        # initialization of configuration for signature api client
-        configuration = groupdocs_signature_cloud.Configuration()
-        configuration.host = Common_Utilities.host
-        configuration.base_url = Common_Utilities.base_url
-        configuration.api_key["api_key"] = Common_Utilities.app_key
-        configuration.api_key["app_sid"] = Common_Utilities.app_sid
-
+    @classmethod
+    def Get_InfoApi_Instance(self):
         # Create instance of the API
-        return groupdocs_signature_cloud.SignatureApi(configuration=configuration)
-
-    @staticmethod
-    def Upload_Test_Files():
+        return groupdocs_signature_cloud.InfoApi.from_keys(Common_Utilities.app_sid, Common_Utilities.app_key)
+    
+    @classmethod
+    def Get_SignApi_Instance(self):
+        # Create instance of the API
+        return groupdocs_signature_cloud.SignApi.from_keys(Common_Utilities.app_sid, Common_Utilities.app_key)
+    
+    @classmethod
+    def Get_StorageApi_Instance(self):
+        # Create instance of the API
+        return groupdocs_signature_cloud.StorageApi.from_keys(Common_Utilities.app_sid, Common_Utilities.app_key)
+    
+    @classmethod
+    def Get_FolderApi_Instance(self):
+        # Create instance of the API
+        return groupdocs_signature_cloud.FolderApi.from_keys(Common_Utilities.app_sid, Common_Utilities.app_key)
+    
+    @classmethod
+    def Get_FileApi_Instance(self):
+        # Create instance of the API
+        return groupdocs_signature_cloud.FileApi.from_keys(Common_Utilities.app_sid, Common_Utilities.app_key)
+      
+    @classmethod  
+    def Upload_Test_Files(self):
         
-        try:
-            print("Uploading test Files...")
-            # initialization of configuration for storage api client
-            storageConfiguration = asposestoragecloud.Configuration()
-            storageConfiguration.host = Common_Utilities.host
-            storageConfiguration.base_url = Common_Utilities.base_url
-            storageConfiguration.api_key_prefix = "Bearer"
-            configuration = groupdocs_signature_cloud.Configuration()
-            configuration.api_key["api_key"] = Common_Utilities.app_key
-            configuration.api_key["app_sid"] = Common_Utilities.app_sid
-            resource_Folder = "Resources"
-            
-            # initialization of storage api client
-            storageApiClient = asposestoragecloud.ApiClient(apiKey=str(configuration.api_key["api_key"]), appSid=str(configuration.api_key["app_sid"]), configuration=storageConfiguration)
-            storageApi = asposestoragecloud.StorageApi(storageApiClient)
-            
-            from os import listdir
-            from os.path import isfile, join
-            onlyfiles = [f for f in listdir(resource_Folder) if isfile(join(resource_Folder, f))]
-            
-            for curFile in onlyfiles:
-                # skip existing file uploading
-                fileExistsResponse = storageApi.get_is_exist(curFile, storage = Common_Utilities.storage_name, _preload_content=False)
-                responseData = json.loads(fileExistsResponse.data)
-                
-                if responseData["code"] == 200 and responseData["fileExist"]["isExist"] == False:
-                    # file stream uploading
-                    filestream = open(file = resource_Folder + "/" + curFile, mode = "rb")
-                    storageApi.put_create(path = curFile, file = filestream, storage = Common_Utilities.storage_name)      
-                    filestream.close()    
-                    print("Uploaded: " + curFile)     
-        except ApiException as e:
-            print("Exception when calling SignatureApi: {0}".format(e.message))
+        dirName = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + "\\Resources\\signaturedocs\\"
+         
+        TestFiles = Common_Utilities.getListOfFiles(dirName)
+        
+        # api initialization
+        storageApi = Common_Utilities.Get_StorageApi_Instance()
+        fileApi = Common_Utilities.Get_FileApi_Instance()
+        
+        print("Files Count: " + str(len(TestFiles)))
+        
+        for item in TestFiles:
+            print("File to Upload: "+ dirName + item)
+            # skip existing file uploading
+            fileExistRequest = groupdocs_signature_cloud.ObjectExistsRequest(dirName + item)
+            fileExistsResponse = storageApi.object_exists(fileExistRequest)
+            if not fileExistsResponse.exists:                
+                # file content uploading
+                putCreateRequest = groupdocs_signature_cloud.UploadFileRequest('signaturedocs\\' + item, dirName + item)
+                fileApi.upload_file(putCreateRequest)
+                print("Uploaded missing file: "+ 'signaturedocs\\' + item)
+        
+        print("File Uploading completed..")
+        
+    @classmethod  
+    def getListOfFiles(self, dirName):
+        # create a list of file and sub directories 
+        # names in the given directory 
+        listOfFile = os.listdir(dirName)
+        allFiles = list()
+        # Iterate over all the entries
+        for entry in listOfFile:
+            # Create full path
+            fullPath = os.path.join("", entry)
+            # If entry is a directory then get the list of files in this directory 
+            if os.path.isdir(fullPath):
+                allFiles = allFiles + Common_Utilities.getListOfFiles(fullPath)
+            else:
+                allFiles.append(fullPath)
+                    
+        return allFiles
