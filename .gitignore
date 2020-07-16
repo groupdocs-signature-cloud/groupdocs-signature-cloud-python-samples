@@ -1,41 +1,5 @@
-# Eclipse project files
-.classpath
-.project
-.settings/
-test-output/
+.vscode
 
-# IntelliJ project files
-__pycache__/
 *.pyc
-*.iml
-*.ipr
 
-# Mac
-.DS_Store
-
-# Others
-Temp/
-obj/
-classes/
-generated/
-bin/
-*_out_*
-* Out*
-* out*
-*.ldb
-_ReSharper*/
-*.pyc
-out/
-*.user
-*.resx
-nbproject/
-__pycache__/
-build/
-build.xml
-Thumbs.db
-manifest.mf
-Out/
-Out*/
-*.lic
-Data/*Out*
-/dist/
+**/__pycache__/
