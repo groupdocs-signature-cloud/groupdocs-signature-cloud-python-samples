@@ -12,17 +12,17 @@ This repository contains [Examples](Examples) projects for [GroupDocs.Signature 
 ## Prerequisites
 
 + Python with PIP installed
-+ Get your AppSID and AppKey at [https://dashboard.groupdocs.cloud](https://dashboard.groupdocs.cloud) (free registration is required).
++ Get your ClientId and ClientSecret at [https://dashboard.groupdocs.cloud](https://dashboard.groupdocs.cloud) (free registration is required).
 
 ## How to Run the Examples?
 
 The package contains Python examples. Follow the given steps to proceed run:
 
-* Extract the downloaded project
-* Go to "Examples" directory of the project
-* Edit RunExamples.py and put there appSid and appKey, obtained from [https://dashboard.groupdocs.cloud](https://dashboard.groupdocs.cloud)
-* Execute "pip install groupdocs_signature_cloud" command
-* Run examples using "python RunExamples.py" command
++ Extract the downloaded project
++ Go to "Examples" directory of the project
++ Edit RunExamples.py and put there ClientId and ClientSecret, obtained from [https://dashboard.groupdocs.cloud](https://dashboard.groupdocs.cloud)
++ Execute "pip install groupdocs_signature_cloud" command
++ Run examples using "python RunExamples.py" command
 
 For more details, visit  [Getting Started](https://docs.groupdocs.cloud/signature/getting-started/).
 

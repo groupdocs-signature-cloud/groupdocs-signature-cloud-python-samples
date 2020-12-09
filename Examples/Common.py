@@ -5,13 +5,13 @@ import os
 class Common:
 
     # This properties are set from main class
-    app_sid = None
-    app_key = None
+    client_id = None
+    client_secret = None
     myStorage = None
     
     @classmethod  
     def GetConfig(cls):
-        configuration = groupdocs_signature_cloud.Configuration(cls.app_sid, cls.app_key)
+        configuration = groupdocs_signature_cloud.Configuration(cls.client_id, cls.client_secret)
         configuration.api_base_url = "https://api.groupdocs.cloud"
         return configuration
 
