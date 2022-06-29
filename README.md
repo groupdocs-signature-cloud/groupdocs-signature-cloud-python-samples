@@ -21,7 +21,7 @@ The package contains Python examples. Follow the given steps to proceed run:
 + Extract the downloaded project
 + Go to "Examples" directory of the project
 + Edit RunExamples.py and put there ClientId and ClientSecret, obtained from [https://dashboard.groupdocs.cloud](https://dashboard.groupdocs.cloud)
-+ Execute "pip install groupdocs_signature_cloud" command
++ Execute "pip install groupdocs_signature_cloud -U" command
 + Run examples using "python RunExamples.py" command
 
 For more details, visit  [Getting Started](https://docs.groupdocs.cloud/signature/getting-started/).
